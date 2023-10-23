@@ -2,7 +2,7 @@
 
 const SearchInput = () => {
     return (
-        <input type="text" name="" id="" className="pokemon__searchInput" />
+        <input type="text" name="" id="" placeholder="Enter search input" className="pokemon__searchInput" />
     )
 }
 
