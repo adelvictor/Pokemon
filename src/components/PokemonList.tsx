@@ -1,8 +1,16 @@
+import usePokemonStore from "../store/pokemonStore";
+import PokemonCard from "./PokemonCard";
 
 
 const PokemonList = () => {
+    const pokemons = usePokemonStore( state => state.pokemons)
     return(
-        <p>Pokemon List</p>
+        <section className="pokemon__container">
+            {pokemons.map( pokemon => (
+                <PokemonCard pokemon={pokemon} />
+            ))}
+        </section>
+        
     )
 }
 

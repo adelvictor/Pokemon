@@ -1,22 +1,33 @@
 import { create } from "zustand";
 
 interface PokemonState {
-    pokemon: Pokemon[]
+    pokemons: Pokemon[]
     allPokemon: Pokemon[]
-    setPokemon: (pokemon: Pokemon[]) => void
+    search: string
+    setSearch: (search :string) => void
+    setPokemons: (pokemons: Pokemon[]) => void
     setAllPokemon: (allPokemon: Pokemon[]) => void
 }
 
-const usePokemonStore = create<PokemonState>()((set) => ({
-    pokemon: [],
+
+const usePokemonStore = create<PokemonState>()((set, get) => ({
+    pokemons: [],
     allPokemon: [],
-    setPokemon: (pokemon) => set({pokemon}),
+    search: "",
+    setSearch: (search) => {
+        set({search})
+        get().setPokemons(get().allPokemon
+            .filter((p) => search!=="" && p.name.toLowerCase().includes(get().search.toLowerCase()))
+            .slice(0, 10)
+            .sort((a, b) => a.name.localeCompare(b.name)))
+    },
+    setPokemons: (pokemons) => set({pokemons}),
     setAllPokemon: (allPokemon) => set({allPokemon: allPokemon})
 }))
 
 fetch("/pokemon.json")
     .then(response => response.json())
-    .then(pokemon => usePokemonStore.getState().setAllPokemon(pokemon))
+    .then(pokemons => usePokemonStore.getState().setAllPokemon(pokemons))
 
 export default usePokemonStore;
 
